@@ -1,46 +1,27 @@
 package br.com.talespalma.forumAlura.service
 
 import br.com.talespalma.forumAlura.DTO.TopicoDTO
-import br.com.talespalma.forumAlura.model.StatusTopicos
+import br.com.talespalma.forumAlura.mappers.TopicoViewMap
 import br.com.talespalma.forumAlura.model.Topico
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 
 
 @Service
 class TopicoService(
     private var listTopicos: MutableList<Topico>,
     private val cursoServices: CursoService,
-    private val usuarioService: UsuarioServices
+    private val usuarioService: UsuarioServices,
+    private val topicoViewMap: TopicoViewMap,
 ) {
 
+    fun retornarTopicos() = listTopicos.map {
+        topicoViewMap.map(it)
+    }.sortedBy { it.id }
 
 
-    init {
-        listTopicos = MutableList<Topico>(10) {
-            Topico(
-                id = it.toLong(),
-                titulo = "Kotlin $it",
-                mensagem = "$it Kotlin é uma linguagem de programação",
-                status = StatusTopicos.NAO_RESPONDIDO,
-                dataCriacao = LocalDateTime.now()
-            )
-        }
-        listTopicos.addLast(
-            Topico(
-                id = 1,
-                titulo = "Kotlin 10",
-                mensagem = "10 Kotlin é uma linguagem de programação",
-                status = StatusTopicos.NAO_RESPONDIDO,
-                dataCriacao = LocalDateTime.now()
-            )
-        )
+    fun returnById(id: Long) = listTopicos.filter { it.id == id }.map {
+        topicoViewMap.map(it)
     }
-
-
-    fun retornarTopicos() = listTopicos
-
-    fun returnById(id: Long) = listTopicos.filter { it.id == id }
 
     fun cadrastarPergunta(topicoDTO: TopicoDTO) {
         listTopicos.addFirst(
