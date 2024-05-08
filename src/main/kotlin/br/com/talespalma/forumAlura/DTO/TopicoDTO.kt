@@ -15,12 +15,14 @@ data class TopicoDTO(
     @field:NotNull val idAuthor: Long
 ) {
     fun toTopico(cursoServices: CursoService,id:Long,usuarioService: UsuarioServices) =
-        Topico(
-            id = id,
-            titulo = titulo,
-            mensagem = menssage,
-            autor = usuarioService.buscarPorId(idCurso),
-            curso = cursoServices.buscarPorId(idCurso)
-        )
+        cursoServices.buscarPorId(idCurso).body?.let {
+            Topico(
+                id = id,
+                titulo = titulo,
+                mensagem = menssage,
+                autor = usuarioService.buscarPorId(idCurso),
+                curso = it
+            )
+        }
 }
 

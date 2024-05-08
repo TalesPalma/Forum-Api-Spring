@@ -8,4 +8,5 @@ class ForumAluraApplication
 
 fun main(args: Array<String>) {
 	runApplication<ForumAluraApplication>(*args)
+
 }

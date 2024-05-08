@@ -1,6 +1,8 @@
 package br.com.talespalma.forumAlura.service
 
 import br.com.talespalma.forumAlura.model.Alunos
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
@@ -31,10 +33,15 @@ class AlunosServices(private var alunos:List<Alunos>){
         )
     }
 
-    fun getAll(): List<Alunos>  = alunos
+    fun getAll(): ResponseEntity<List<Alunos>> {
+        return ResponseEntity.status(HttpStatus.OK).body(alunos)
+    }
 
 
 
-    fun getById(id: Int): List<Alunos>  = alunos.filter { it.id == id }
+    fun getById(id: Int): ResponseEntity<List<Alunos>> {
+        val alunosFiltrados = alunos.filter { it.id == id }
+        return ResponseEntity.status(HttpStatus.OK).body(alunosFiltrados)
+    }
 
 }
